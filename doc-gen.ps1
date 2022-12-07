@@ -2,7 +2,8 @@
 
 [CmdletBinding()]
 param (
-    [String]$repoType = $env:REPO_TYPE
+    [String]$repoType = $env:REPO_TYPE,
+    [String]$fileToSearch = $env:FILE_NAME
 )
 
 
@@ -11,18 +12,23 @@ $topLevelPath = git rev-parse --show-toplevel
 
 
 
-[string[]]$markdown = Get-Content (Get-ChildItem  –Path $topLevelPath -Include "header.md" -File -Recurse -ErrorAction SilentlyContinue)
+[string[]]$markdown = Get-Content (Get-ChildItem  –Path $topLevelPath -Include "header.md" -File -Recurse -ErrorAction SilentlyContinue -Force)
 
-# Assign the default value to action.yaml and only change if workflow is specified.
-$fileToSearch = "./action.yaml"
-if($repoType -eq "workflow") {
-    $fileToSearch = "./workflow.yaml"
+if(!$fileToSearch) {
+    $fileToSearch = "action.yaml"
 }
 
-$yaml_property = Get-Content $fileToSearch | ConvertFrom-Yaml
+$yaml_property = Get-Content (Get-ChildItem  –Path $topLevelPath -Include $fileToSearch -File -Recurse -ErrorAction SilentlyContinue -Force) | ConvertFrom-Yaml
+
 $inputs = $yaml_property["inputs"]
 $secrets = $yaml_property["secrets"]
 $outputs = $yaml_property["outputs"]
+
+if($repoType -eq "workflow"){
+    $inputs = $yaml_property["on"]["workflow_call"]["inputs"]
+    $outputs = $yaml_property["on"]["workflow_call"]["outputs"]
+    $secrets = $secrets["on"]["workflow_call"]["secrets"]
+}
 
 $markdown += "## Inputs"
 $markdown += ""
@@ -74,6 +80,6 @@ if($outputs) {
     }
 }
 # modify the code below to only search for files with the name content.md
-$markdown += Get-Content (Get-ChildItem  –Path $topLevelPath -Include "content.md" -File -Recurse -ErrorAction SilentlyContinue)
+$markdown += Get-Content (Get-ChildItem  –Path $topLevelPath -Include "content.md" -File -Recurse -ErrorAction SilentlyContinue -Force)
 
 $markdown | Set-Content -Path "README.md"

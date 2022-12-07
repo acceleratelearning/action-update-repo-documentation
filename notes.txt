@@ -1,7 +1,0 @@
-Need to define exactly what the action should do:
-
-Flow:
-1. Github action referenced from shared workflow or within a workflow.
-2. Action finds content.md and header.md, consildates 
-them, and pushes them to a README.md file
-3. Action produces the new README.md file and checks it in. 
