@@ -1,6 +1,6 @@
 # What's New
 
-This is a test create of the content.md file that will be used in the README.md generation. Attempting to trigger update-docs workflow on this PulL ReQuEsT!
+The latest version of this action requires a file name and repo type parameter. The action automatically searches for a "header.md" and a "content.md" file in your repository to inject into your README.md. 
 
 # Usage
 
