@@ -1,6 +1,6 @@
-# workflow-container-image-pull-request
+# action-update-repo-documentation
 
-A shared workflow for publishing a release within a github repository. Releases include version numbers, major/minor tags, and release notes.
+A github action for automatically creating documentation for github workflows and actions.
 ## Inputs
 
 | Name | Type | Required | Description |
