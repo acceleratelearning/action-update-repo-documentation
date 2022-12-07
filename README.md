@@ -5,6 +5,7 @@ A shared workflow for publishing a release within a github repository. Releases 
 
 | Name | Type | Required | Description |
 | ---- | ---- | -------- | ----------- |
+| repo-type |  |  | The type of repo to generate documentation for (either workflow or action) |
 ## Outputs
 
 | Name | Description | Value
@@ -18,31 +19,25 @@ This is a test create of the content.md file that will be used in the README.md 
 
 <!-- start usage -->
 ```yaml
-name: Publish Release
+name: Update Docs
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    paths:
+      - 'doc-gen/header.md'
+      - 'doc-gen/content.md'
+      - 'action.yaml'
 jobs:
-  update:
+  update-docs:
     name: Update documentation
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Get Next Release Version
-        id: get-next-release-version
-        uses: acceleratelearning/action-get-next-release-version@v1
+      - name: Update README
+        id: update-readme
+        uses: acceleratelearning/action-update-repo-documentation@v1
         with:
-          major-minor-version: "4.0"
-
-      - name: Publish GitHub Release
-        id: publish-release
-        uses: acceleratelearning/action-publish-github-release@v1
-        with:
-          version: "${{ steps.get-next-release-version.outputs.next-version }}"
-          prefix: v
-          add-major-minor-tags: true
+          repo-type: "workflow"
 ```
 <!-- end usage -->
