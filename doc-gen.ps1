@@ -1,21 +1,28 @@
 #!/usr/bin/env pwsh
 
-# Ben's Code
+[CmdletBinding()]
+param (
+    [String]$repoType = $env:REPO_TYPE
+)
+
 
 # get the path to the .git file
 $topLevelPath = git rev-parse --show-toplevel
-# print the rightmost side of the path
-$githubRepoName = $topLevelPath -split '/' | Select-Object -Last 1
-# convert the path to a string variable
-$githubRepoName = $githubRepoName.ToString()
 
 
-[string[]]$markdown = Get-ChildItem  –Path $githubRepoName -Include header.md -File -Recurse -ErrorAction SilentlyContinue
 
-$workflow_definition = Get-Content ./action.yaml | ConvertFrom-Yaml
-$inputs = $workflow_definition["inputs"]
-$secrets = $workflow_definition["secrets"]
-$outputs = $workflow_definition["outputs"]
+[string[]]$markdown = Get-Content (Get-ChildItem  –Path $topLevelPath -Include "header.md" -File -Recurse -ErrorAction SilentlyContinue)
+
+# Assign the default value to action.yaml and only change if workflow is specified.
+$fileToSearch = "./action.yaml"
+if($repoType -eq "workflow") {
+    $fileToSearch = "./workflow.yaml"
+}
+
+$yaml_property = Get-Content $fileToSearch | ConvertFrom-Yaml
+$inputs = $yaml_property["inputs"]
+$secrets = $yaml_property["secrets"]
+$outputs = $yaml_property["outputs"]
 
 $markdown += "## Inputs"
 $markdown += ""
@@ -67,6 +74,6 @@ if($outputs) {
     }
 }
 # modify the code below to only search for files with the name content.md
-$markdown += Get-ChildItem -Path $githubRepoName -Include "content.md" -File -Recurse -ErrorAction SilentlyContinue
+$markdown += Get-Content (Get-ChildItem  –Path $topLevelPath -Include "content.md" -File -Recurse -ErrorAction SilentlyContinue)
 
 $markdown | Set-Content -Path "README.md"

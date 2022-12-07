@@ -1,5 +1,10 @@
 name: Update README.md
 description: Update the README.md based on the current action's input and outputs
+inputs:
+  repo-type:
+    description: The type of repo to generate documentation for (either workflow or action)
+    required: false
+    default: "action"
 outputs:
   README:
     description: The README.md file for the repository
@@ -21,6 +26,8 @@ runs:
       id: publish-readme
       shell: pwsh
       run: ${{ github.action_path }}/doc-gen.ps1
+      env:
+        REPO_TYPE: ${{ inputs.repo-type }}
 
     - name: Push files to repo
       shell: pwsh

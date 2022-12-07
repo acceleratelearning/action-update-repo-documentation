@@ -1,11 +1,3 @@
-# What's New
-
-This is a test create of the content.md file that will be used in the README.md generation. Attempting to trigger update-docs workflow on this PulL ReQuEsT!
-
-# Usage
-
-<!-- start usage -->
-```yaml
 name: Update Docs
 on:
   pull_request:
@@ -23,8 +15,6 @@ jobs:
 
       - name: Update README
         id: update-readme
-        uses: acceleratelearning/action-update-repo-documentation@v1
+        uses: ./
         with:
           repo-type: "workflow"
-```
-<!-- end usage -->
