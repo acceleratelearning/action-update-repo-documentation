@@ -17,4 +17,4 @@ jobs:
         id: update-readme
         uses: ./
         with:
-          repo-type: "workflow"
+          repo-type: "action"
