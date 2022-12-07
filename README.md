@@ -1,11 +1,12 @@
-# workflow-container-image-pull-request
+# action-update-repo-documentation
 
-A shared workflow for publishing a release within a github repository. Releases include version numbers, major/minor tags, and release notes.
+A github action for automatically creating documentation for github workflows and actions.
 ## Inputs
 
 | Name | Type | Required | Description |
 | ---- | ---- | -------- | ----------- |
-| repo-type |  |  | The type of repo to generate documentation for (either workflow or action) |
+| file-name |  | :heavy_check_mark: | The name of the yaml file to generate documentation for. |
+| repo-type |  | :heavy_check_mark: | The type of repo you are generating documentation for. |
 ## Outputs
 
 | Name | Description | Value
@@ -38,6 +39,6 @@ jobs:
         id: update-readme
         uses: acceleratelearning/action-update-repo-documentation@v1
         with:
-          repo-type: "workflow"
+          repo-type: "action.yaml"
 ```
 <!-- end usage -->

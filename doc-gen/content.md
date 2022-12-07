@@ -26,5 +26,6 @@ jobs:
         uses: acceleratelearning/action-update-repo-documentation@v1
         with:
           repo-type: "workflow"
+          file-name: "shared-workflow.yaml"
 ```
 <!-- end usage -->
