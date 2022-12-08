@@ -27,7 +27,7 @@ $outputs = $yaml_property["outputs"]
 if($repoType -eq "workflow"){
     $inputs = $yaml_property["on"]["workflow_call"]["inputs"]
     $outputs = $yaml_property["on"]["workflow_call"]["outputs"]
-    $secrets = $secrets["on"]["workflow_call"]["secrets"]
+    $secrets = $yaml_property["on"]["workflow_call"]["secrets"]
 }
 
 $markdown += "## Inputs"
